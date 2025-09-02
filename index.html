@@ -1,35 +1,41 @@
-<script>
-const REPL_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Caixa de Entrada</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    h1 { color: #333; }
+    #emails { margin-top: 20px; }
+    .email { background: #fff; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Últimos E-mails</h1>
+  <div id="emails">Carregando...</div>
 
-async function carregarEmails() {
-    const filtro = document.getElementById("filtro").value.toLowerCase();
-    const div = document.getElementById("emails");
-    div.innerHTML = "<p>Carregando...</p>";
+  <script>
+    async function carregarEmails() {
+      try {
+        // 🔗 Troque AQUI pela URL do Replit (Flask)
+        let resposta = await fetch("https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/emails");
+        let dados = await resposta.json();
 
-    try {
-        const resposta = await fetch(REPL_URL);
-        const data = await resposta.json();
-        div.innerHTML = "";
-        const filtrados = data.filter(email => email.toLowerCase().includes(filtro));
-        if (filtrados.length === 0) {
-            div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
-        } else {
-            filtrados.forEach(email => {
-                const bloco = document.createElement("div");
-                bloco.className = "email";
-                bloco.innerHTML = `
-                    <div class="from">${email.split('|')[0]}</div>
-                    <div class="subject">${email.split('|')[1]}</div>
-                    <div class="date">${email.split('|')[2]}</div>
-                `;
-                div.appendChild(bloco);
-            });
-        }
-    } catch (erro) {
-        console.error("Erro:", erro);
-        div.innerHTML = "<p>Erro ao buscar e-mails.</p>";
+        let container = document.getElementById("emails");
+        container.innerHTML = "";
+
+        dados.forEach(email => {
+          let div = document.createElement("div");
+          div.className = "email";
+          div.innerHTML = `<b>${email.remetente}</b>: ${email.assunto}`;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        document.getElementById("emails").innerText = "Erro ao carregar e-mails.";
+      }
     }
-}
 
-carregarEmails();
-</script>
+    carregarEmails();
+  </script>
+</body>
+</html>
