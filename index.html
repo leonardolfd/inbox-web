@@ -1,41 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Caixa de Entrada</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-    h1 { color: #333; }
-    #emails { margin-top: 20px; }
-    .email { background: #fff; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-  </style>
-</head>
-<body>
-  <h1>Últimos E-mails</h1>
-  <div id="emails">Carregando...</div>
-
-  <script>
-    async function carregarEmails() {
-      try {
-        // 🔗 Troque AQUI pela URL do Replit (Flask)
-        let resposta = await fetch("https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/emails");
-        let dados = await resposta.json();
-
-        let container = document.getElementById("emails");
-        container.innerHTML = "";
-
-        dados.forEach(email => {
-          let div = document.createElement("div");
-          div.className = "email";
-          div.innerHTML = `<b>${email.remetente}</b>: ${email.assunto}`;
-          container.appendChild(div);
-        });
-      } catch (err) {
-        document.getElementById("emails").innerText = "Erro ao carregar e-mails.";
+  <head>
+    <meta charset="UTF-8" />
+    <title>Caixa de Entrada</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        padding: 20px;
       }
-    }
+      h1 { color: #333; }
+      #filtro { margin-bottom: 10px; padding: 5px; width: 300px; }
+      button { padding: 5px 10px; margin-left: 10px; }
+      .email {
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      .from { font-weight: bold; }
+      .subject { margin: 5px 0; }
+      .date { font-size: 0.9em; color: gray; }
+    </style>
+  </head>
+  <body>
+    <h1>Últimos E-mails</h1>
+    <input type="text" id="filtro" placeholder="Filtrar por remetente ou assunto" />
+    <button onclick="carregarEmails()">Atualizar</button>
+    <div id="emails"><p>Carregando...</p></div>
 
-    carregarEmails();
-  </script>
-</body>
+    <script>
+      // Use a URL pública do Replit
+      const REPL_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
+
+      async function carregarEmails() {
+        const filtro = document.getElementById("filtro").value.toLowerCase();
+        const div = document.getElementById("emails");
+        div.innerHTML = "<p>Carregando...</p>";
+
+        try {
+          const resposta = await fetch(REPL_URL);
+          const data = await resposta.json();
+          div.innerHTML = "";
+
+          // Filtra os e-mails pelo remetente ou assunto
+          const filtrados = data.filter(email =>
+            email.remetente.toLowerCase().includes(filtro) ||
+            email.assunto.toLowerCase().includes(filtro)
+          );
+
+          if (filtrados.length === 0) {
+            div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
+          } else {
+            filtrados.forEach(email => {
+              const bloco = document.createElement("div");
+              bloco.className = "email";
+              bloco.innerHTML = `
+                <div class="from">${email.remetente}</div>
+                <div class="subject">${email.assunto}</div>
+                <div class="date">${email.data}</div>
+              `;
+              div.appendChild(bloco);
+            });
+          }
+        } catch (erro) {
+          console.error("Erro:", erro);
+          div.innerHTML = "<p>Erro ao buscar e-mails.</p>";
+        }
+      }
+
+      carregarEmails();
+    </script>
+  </body>
 </html>
