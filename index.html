@@ -31,7 +31,6 @@
     <div id="emails"><p>Carregando...</p></div>
 
     <script>
-      // Use a URL pública do Replit
       const REPL_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
 
       async function carregarEmails() {
@@ -44,9 +43,8 @@
           const data = await resposta.json();
           div.innerHTML = "";
 
-          // Filtra os e-mails pelo remetente ou assunto
-          const filtrados = data.filter(email =>
-            email.remetente.toLowerCase().includes(filtro) ||
+          const filtrados = data.filter(email => 
+            email.remetente.toLowerCase().includes(filtro) || 
             email.assunto.toLowerCase().includes(filtro)
           );
 
