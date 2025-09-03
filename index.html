@@ -1,83 +1,54 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Caixa de Entrada</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        padding: 20px;
-      }
-      h1 { color: #333; }
-      #filtro { margin-bottom: 10px; padding: 5px; width: 300px; }
-      select, button { padding: 5px 10px; margin-left: 5px; }
-      .email {
-        background: #fff;
-        padding: 10px;
-        margin-bottom: 5px;
-        border-radius: 5px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      }
-      .from { font-weight: bold; }
-      .subject { margin: 5px 0; }
-      .date { font-size: 0.9em; color: gray; }
-    </style>
-  </head>
-  <body>
-    <h1>Últimos E-mails</h1>
+<h1>Últimos E-mails</h1>
 
-    <input type="text" id="filtro" placeholder="Filtrar por remetente ou assunto" />
-    <select id="pasta">
-      <option value="INBOX">Inbox</option>
-      <option value="Spam">Spam</option>
-      <option value="Projetos">Projetos</option>
-      <option value="Financeiro">Financeiro</option>
-    </select>
-    <button onclick="carregarEmails()">Atualizar</button>
+<input type="text" id="filtro" placeholder="Filtrar por remetente ou assunto" />
+<select id="pasta">
+  <option value="INBOX">Inbox</option>
+  <option value="Spam">Spam</option>
+  <option value="Projetos">Projetos</option>
+  <option value="Financeiro">Financeiro</option>
+</select>
+<button onclick="carregarEmails()">Atualizar</button>
 
-    <div id="emails"><p>Carregando...</p></div>
+<div id="emails"><p>Carregando...</p></div>
 
-    <script>
-      const API_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
+<script>
+const API_URL = "https://<seu-replit-url>/api/emails"; // URL pública do Replit
 
-      async function carregarEmails() {
-        const filtro = document.getElementById("filtro").value.toLowerCase();
-        const pasta = document.getElementById("pasta").value;
-        const div = document.getElementById("emails");
-        div.innerHTML = "<p>Carregando...</p>";
+async function carregarEmails() {
+  const filtro = document.getElementById("filtro").value.toLowerCase();
+  const pasta = document.getElementById("pasta").value;
+  const div = document.getElementById("emails");
+  div.innerHTML = "<p>Carregando...</p>";
 
-        try {
-          const resposta = await fetch(`${API_URL}?pasta=${pasta}`);
-          const data = await resposta.json();
-          div.innerHTML = "";
+  try {
+    const resposta = await fetch(`${API_URL}?pasta=${pasta}`);
+    const data = await resposta.json();
+    div.innerHTML = "";
 
-          const filtrados = data.filter(email => 
-            email.remetente.toLowerCase().includes(filtro) || 
-            email.assunto.toLowerCase().includes(filtro)
-          );
+    const filtrados = data.filter(email => 
+      email.remetente.toLowerCase().includes(filtro) || 
+      email.assunto.toLowerCase().includes(filtro)
+    );
 
-          if (filtrados.length === 0) {
-            div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
-          } else {
-            filtrados.forEach(email => {
-              const bloco = document.createElement("div");
-              bloco.className = "email";
-              bloco.innerHTML = `
-                <div class="from">${email.remetente}</div>
-                <div class="subject">${email.assunto}</div>
-                <div class="date">${email.data}</div>
-              `;
-              div.appendChild(bloco);
-            });
-          }
-        } catch (erro) {
-          console.error("Erro:", erro);
-          div.innerHTML = "<p>Erro ao buscar e-mails.</p>";
-        }
-      }
+    if (filtrados.length === 0) {
+      div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
+    } else {
+      filtrados.forEach(email => {
+        const bloco = document.createElement("div");
+        bloco.className = "email";
+        bloco.innerHTML = `
+          <div class="from">${email.remetente}</div>
+          <div class="subject">${email.assunto}</div>
+          <div class="date">${email.data}</div>
+        `;
+        div.appendChild(bloco);
+      });
+    }
+  } catch (erro) {
+    console.error("Erro:", erro);
+    div.innerHTML = "<p>Erro ao buscar e-mails.</p>";
+  }
+}
 
-      carregarEmails();
-    </script>
-  </body>
-</html>
+carregarEmails();
+</script>
