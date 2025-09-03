@@ -11,7 +11,7 @@
       }
       h1 { color: #333; }
       #filtro { margin-bottom: 10px; padding: 5px; width: 300px; }
-      button { padding: 5px 10px; margin-left: 10px; }
+      select, button { padding: 5px 10px; margin-left: 5px; }
       .email {
         background: #fff;
         padding: 10px;
@@ -26,20 +26,29 @@
   </head>
   <body>
     <h1>Últimos E-mails</h1>
+
     <input type="text" id="filtro" placeholder="Filtrar por remetente ou assunto" />
+    <select id="pasta">
+      <option value="INBOX">Inbox</option>
+      <option value="Spam">Spam</option>
+      <option value="Projetos">Projetos</option>
+      <option value="Financeiro">Financeiro</option>
+    </select>
     <button onclick="carregarEmails()">Atualizar</button>
+
     <div id="emails"><p>Carregando...</p></div>
 
     <script>
-      const REPL_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
+      const API_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
 
       async function carregarEmails() {
         const filtro = document.getElementById("filtro").value.toLowerCase();
+        const pasta = document.getElementById("pasta").value;
         const div = document.getElementById("emails");
         div.innerHTML = "<p>Carregando...</p>";
 
         try {
-          const resposta = await fetch(REPL_URL);
+          const resposta = await fetch(`${API_URL}?pasta=${pasta}`);
           const data = await resposta.json();
           div.innerHTML = "";
 
