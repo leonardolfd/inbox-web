@@ -12,12 +12,13 @@
     .from { font-weight: bold; }
     .subject { margin: 4px 0; }
     .date { font-size: 0.9em; color: gray; }
+    .body { margin-top: 6px; font-size: 0.95em; color: #555; }
   </style>
 </head>
 <body>
   <h1>Últimos E-mails</h1>
 
-  <input type="text" id="filtro" placeholder="Filtrar por remetente ou assunto" />
+  <input type="text" id="filtro" placeholder="Filtrar por remetente ou conteúdo" />
   <select id="pasta">
     <option value="INBOX">Inbox</option>
     <option value="Spam">Spam</option>
@@ -43,9 +44,11 @@
         const data = await resposta.json();
         div.innerHTML = "";
 
+        // Filtrar pelo remetente, assunto ou conteúdo
         const filtrados = data.filter(email =>
           email.remetente.toLowerCase().includes(filtro) ||
-          email.assunto.toLowerCase().includes(filtro)
+          email.assunto.toLowerCase().includes(filtro) ||
+          (email.conteudo && email.conteudo.toLowerCase().includes(filtro))
         );
 
         if (filtrados.length === 0) {
@@ -58,6 +61,7 @@
               <div class="from">${email.remetente}</div>
               <div class="subject">${email.assunto}</div>
               <div class="date">${email.data}</div>
+              <div class="body">${email.conteudo ? email.conteudo.substring(0, 200) + '...' : ''}</div>
             `;
             div.appendChild(bloco);
           });
