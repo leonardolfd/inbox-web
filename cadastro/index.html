@@ -1,0 +1,112 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .link-login {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .link-login a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .link-login a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <form action="/cgi-bin/processa.py" method="post">
+        <h2>Formulário de Cadastro</h2>
+        <label>Nome:
+            <input type="text" name="nome" required>
+        </label>
+        <label>Email:
+            <input type="email" name="email" required>
+        </label>
+        <label>Rua:
+            <input type="text" name="rua" required>
+        </label>
+        <label>Número:
+            <input type="number" name="numero" required>
+        </label>
+        <label>Bairro:
+            <input type="text" name="bairro" required>
+        </label>
+        <label>Cidade:
+            <input type="text" name="cidade" required>
+        </label>
+        <label>Estado:
+            <input type="text" name="estado" required>
+        </label>
+        <label>CEP:
+            <input type="text" name="cep" required>
+        </label>
+        <label>Telefone:
+            <input type="text" name="telefone" required>
+        </label>
+        <label>Plano:
+            <select name="plano" required>
+                <option value="Básico">Básico</option>
+                <option value="Padrão">Padrão</option>
+                <option value="Premium">Premium</option>
+            </select>
+        </label>
+        <input type="submit" value="Cadastrar">
+
+        <div class="link-login">
+            <p>Já tem uma conta? <a href="C:/Users/ht3044173/Desktop/cadastro%20e%20login/formulario.html">Faça login aqui</a></p>
+        </div>
+    </form>
+</body>
+</html>
