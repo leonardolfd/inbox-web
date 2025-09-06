@@ -18,7 +18,7 @@
 <body>
   <h1>Últimos E-mails</h1>
 
-  <input type="text" id="filtro" placeholder="Filtrar por remetente ou conteúdo" />
+  <input type="text" id="filtro" placeholder="Filtrar por remetente, assunto ou conteúdo" />
   <select id="pasta">
     <option value="INBOX">Inbox</option>
     <option value="Spam">Spam</option>
@@ -30,8 +30,7 @@
   <div id="emails"><p>Carregando...</p></div>
 
   <script>
-    // URL pública do seu backend no Replit
-    const API_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails";
+    const API_URL = "https://SEU-BACKEND-REPLIT/api/emails"; // substitua pelo seu URL do Replit
 
     async function carregarEmails() {
       const filtro = document.getElementById("filtro").value.toLowerCase();
@@ -44,7 +43,6 @@
         const data = await resposta.json();
         div.innerHTML = "";
 
-        // Filtrar pelo remetente, assunto ou conteúdo
         const filtrados = data.filter(email =>
           email.remetente.toLowerCase().includes(filtro) ||
           email.assunto.toLowerCase().includes(filtro) ||
