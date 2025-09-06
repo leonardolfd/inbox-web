@@ -6,7 +6,6 @@
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
     h1 { color: #333; }
-    #filtro { margin-bottom: 10px; padding: 5px; }
     select, button { margin: 5px; padding: 5px; }
     .email { background: #fff; margin: 8px 0; padding: 10px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .from { font-weight: bold; }
@@ -18,7 +17,6 @@
 <body>
   <h1>Últimos E-mails</h1>
 
-  <input type="text" id="filtro" placeholder="Filtrar por remetente, assunto ou conteúdo" />
   <select id="pasta">
     <option value="INBOX">Inbox</option>
     <option value="Spam">Spam</option>
@@ -27,13 +25,12 @@
   </select>
   <button onclick="carregarEmails()">Atualizar</button>
 
-  <div id="emails"><p>Carregando...</p></div>
+  <div id="emails"></div>
 
   <script>
     const API_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails"; // coloque a URL correta do Replit
 
     async function carregarEmails() {
-      const filtro = document.getElementById("filtro").value.toLowerCase();
       const pasta = document.getElementById("pasta").value;
       const div = document.getElementById("emails");
       div.innerHTML = "<p>Carregando...</p>";
@@ -43,16 +40,10 @@
         const data = await resposta.json();
         div.innerHTML = "";
 
-        const filtrados = data.filter(email =>
-          email.remetente.toLowerCase().includes(filtro) ||
-          email.assunto.toLowerCase().includes(filtro) ||
-          (email.conteudo && email.conteudo.toLowerCase().includes(filtro))
-        );
-
-        if (filtrados.length === 0) {
+        if (data.length === 0) {
           div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
         } else {
-          filtrados.forEach(email => {
+          data.forEach(email => {
             const bloco = document.createElement("div");
             bloco.className = "email";
             bloco.innerHTML = `
@@ -70,7 +61,7 @@
       }
     }
 
-    // Atualiza automaticamente a cada 10 segundos
+    // Carrega e atualiza automaticamente a cada 10s
     carregarEmails();
     setInterval(carregarEmails, 10000);
   </script>
