@@ -30,7 +30,7 @@
   <div id="emails"><p>Carregando...</p></div>
 
   <script>
-    const API_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails"; // substitua pelo seu URL do Replit
+    const API_URL = "https://SEU_REPLIT_URL/api/emails"; // coloque a URL correta do Replit
 
     async function carregarEmails() {
       const filtro = document.getElementById("filtro").value.toLowerCase();
@@ -58,8 +58,8 @@
             bloco.innerHTML = `
               <div class="from">${email.remetente}</div>
               <div class="subject">${email.assunto}</div>
-              <div class="date">${email.data}</div>
-              <div class="body">${email.conteudo ? email.conteudo.substring(0, 200) + '...' : ''}</div>
+              <div class="date">${email.data || ''}</div>
+              <div class="body">${email.conteudo ? email.conteudo.substring(0,200) + '...' : ''}</div>
             `;
             div.appendChild(bloco);
           });
@@ -70,8 +70,9 @@
       }
     }
 
-    // Carrega automaticamente ao abrir a página
+    // Atualiza automaticamente a cada 10 segundos
     carregarEmails();
+    setInterval(carregarEmails, 10000);
   </script>
 </body>
 </html>
