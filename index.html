@@ -30,35 +30,35 @@
   <script>
     const API_URL = "https://c32da2d5-0519-4a62-92cb-20b43cfe77a5-00-1er4j7p5c2dco.riker.replit.dev/api/emails"; // coloque a URL correta do Replit
 
-    async function carregarEmails() {
-      const pasta = document.getElementById("pasta").value;
-      const div = document.getElementById("emails");
+async function carregarEmails() {
+  const pasta = document.getElementById("pasta").value;
+  const div = document.getElementById("emails");
 
-      try {
-        const resposta = await fetch(`${API_URL}?pasta=${pasta}`);
-        const data = await resposta.json();
-        div.innerHTML = "";
+  try {
+    const resposta = await fetch(`${API_URL}?pasta=${pasta}`);
+    const data = await resposta.json();
+    div.innerHTML = "";
 
-        if (data.length === 0) {
-          div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
-        } else {
-          data.forEach(email => {
-            const bloco = document.createElement("div");
-            bloco.className = "email";
-            bloco.innerHTML = `
-              <div class="from">${email.remetente}</div>
-              <div class="subject">${email.assunto}</div>
-              <div class="date">${email.data || ''}</div>
-              <div class="body">${email.conteudo ? email.conteudo.substring(0,200) + '...' : ''}</div>
-            `;
-            div.appendChild(bloco);
-          });
-        }
-      } catch (erro) {
-        console.error("Erro:", erro);
-        div.innerHTML = "<p>Erro ao buscar e-mails.</p>";
-      }
+    if (data.length === 0) {
+      div.innerHTML = "<p>Nenhum e-mail encontrado.</p>";
+    } else {
+      data.forEach(email => {
+        const bloco = document.createElement("div");
+        bloco.className = "email";
+        bloco.innerHTML = `
+          <div class="from">${email.remetente}</div>
+          <div class="subject">${email.assunto}</div>
+          <div class="date">${email.data || ''}</div>
+          <div class="body">${email.conteudo ? email.conteudo.substring(0,200) + '...' : ''}</div>
+        `;
+        div.appendChild(bloco);
+      });
     }
+  } catch (erro) {
+    console.error("Erro:", erro);
+    div.innerHTML = "<p>Erro ao buscar e-mails.</p>";
+  }
+}
 
     // Atualiza automaticamente a cada 10 segundos
     carregarEmails();
