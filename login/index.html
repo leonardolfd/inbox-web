@@ -2,49 +2,84 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Cadastro</title>
     <style>
-        body { font-family: Arial; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        form { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 400px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
         h2 { text-align: center; margin-bottom: 20px; }
         label { display: block; margin-bottom: 15px; }
         input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
-        input[type="submit"] { margin-top: 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        input[type="submit"] {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
         input[type="submit"]:hover { background-color: #45a049; }
-        .link-cadastro { margin-top: 15px; text-align: center; }
-        .link-cadastro a { color: #007BFF; text-decoration: none; }
-        .link-cadastro a:hover { text-decoration: underline; }
+
+        .link-login { margin-top: 15px; text-align: center; }
+        .link-login a { color: #007BFF; text-decoration: none; }
+        .link-login a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <form id="loginForm">
-        <h2>Login</h2>
-        <label>Email:<input type="email" id="email" required></label>
-        <label>Senha:<input type="password" id="senha" required></label>
-        <input type="submit" value="Entrar">
-        <div class="link-cadastro">
-            <p>Ainda não tem uma conta? <a href="../cadastro/index.html">Cadastre-se aqui</a></p>
-        </div>
-    </form>
 
-    <script>
-        const API_URL = "https://7b4c6cc1-5fad-4447-8419-d9b877242da4-00-ru05r5yomshx.picard.replit.dev/"; // substitua pela URL do seu Replit
+<form id="cadastroForm">
+    <h2>Formulário de Cadastro</h2>
 
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
+    <label>Nome:
+        <input type="text" name="nome" id="nome" required>
+    </label>
 
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
+    <label>Email:
+        <input type="email" name="email" id="email" required>
+    </label>
 
-            const resposta = await fetch(`${API_URL}/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, senha })
-            });
+    <label>Senha:
+        <input type="password" name="senha" id="senha" required>
+    </label>
 
-            const dados = await resposta.json();
-            alert(dados.message);
-        });
-    </script>
+    <input type="submit" value="Cadastrar">
+
+    <div class="link-login">
+        <p>Já tem uma conta? <a href="/login">Faça login aqui</a></p>
+    </div>
+</form>
+
+<script>
+document.getElementById("cadastroForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const nome = document.getElementById("nome").value;
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    const resposta = await fetch("https://7b4c6cc1-5fad-4447-8419-d9b877242da4-00-ru05r5yomshx.picard.replit.dev/cadastro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, senha })
+    });
+
+    const dados = await resposta.json();
+    alert(dados.message);
+});
+</script>
+
 </body>
 </html>
