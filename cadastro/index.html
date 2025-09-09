@@ -1,88 +1,52 @@
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Cadastro</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            line-height: 1.5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        form {
-            background: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 400px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 15px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-
-        input[type="submit"] {
-            margin-top: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        .link-login {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .link-login a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-
-        .link-login a:hover {
-            text-decoration: underline;
-        }
+        body { font-family: Arial; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        form { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 400px; }
+        h2 { text-align: center; margin-bottom: 20px; }
+        label { display: block; margin-bottom: 15px; }
+        input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        input[type="submit"] { margin-top: 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
+        .link-login { margin-top: 15px; text-align: center; }
+        .link-login a { color: #007BFF; text-decoration: none; }
+        .link-login a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <form action="{{ url_for('cadastro') }}" method="post">
-    <h2>Formulário de Cadastro</h2>
-    <label>Nome:
-        <input type="text" name="nome" required>
-    </label>
-    <label>Email:
-        <input type="email" name="email" required>
-    </label>
-    <label>Senha:
-        <input type="password" name="senha" required>
-    </label>
-    <input type="submit" value="Cadastrar">
+    <form id="cadastroForm">
+        <h2>Formulário de Cadastro</h2>
+        <label>Nome:<input type="text" id="nome" required></label>
+        <label>Email:<input type="email" id="email" required></label>
+        <label>Senha:<input type="password" id="senha" required></label>
+        <input type="submit" value="Cadastrar">
+        <div class="link-login">
+            <p>Já tem uma conta? <a href="../login/index.html">Faça login aqui</a></p>
+        </div>
+    </form>
 
-    <div class="link-login">
-        <p>Já tem uma conta? <a href="{{ url_for('login') }}">Faça login aqui</a></p>
-    </div>
-</form>
+    <script>
+        const API_URL = "https://SEU_REPLIT.replit.app"; // substitua pela URL do seu Replit
 
+        document.getElementById("cadastroForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById("nome").value;
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
+
+            const resposta = await fetch(`${API_URL}/cadastro`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome, email, senha })
+            });
+
+            const dados = await resposta.json();
+            alert(dados.message);
+        });
+    </script>
 </body>
 </html>
